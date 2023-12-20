@@ -1,3 +1,4 @@
 from .StartupWindowView import *
 from .StartupWidgetView import *
-from .NewProjectDialog import *
+from .NewProjectDialogView import *
+from .GameEditorWindowView import *

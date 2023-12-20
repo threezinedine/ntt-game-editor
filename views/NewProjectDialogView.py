@@ -8,7 +8,7 @@ from nttinject import *
 
 
 @dependency_inject(NewProjectDialogViewModel)
-class NewProjectDialog(QDialog):
+class NewProjectDialogView(QDialog):
     def __init__(
         self,
         vmNewProjectDialogViewModel: NewProjectDialogViewModel,

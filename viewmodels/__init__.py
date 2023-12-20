@@ -1,2 +1,4 @@
-from .StartupWidgetViewModel import StartupWidgetViewModel
-from .NewProjectDialogViewModel import NewProjectDialogViewModel
+from .StartupWidgetViewModel import *
+from .NewProjectDialogViewModel import *
+from .GameEditorCentralWidgetViewModel import *
+from .LogDockWidgetViewModel import *

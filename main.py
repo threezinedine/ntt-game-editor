@@ -19,10 +19,14 @@ if __name__ == "__main__":
     injector.AddTransient(
         NewProjectDialogViewModel, lambda: NewProjectDialogViewModel()
     )
+    injector.AddSingleton(
+        GameEditorCentralWidgetViewModel, lambda: GameEditorCentralWidgetViewModel()
+    )
+    injector.AddSingleton(LogDockWidgetViewModel, lambda: LogDockWidgetViewModel())
 
     app = QApplication(sys.argv)
 
-    window = StartupWindowView()
+    window = StartupWindowView(GameEditorWindowView())
     window.showMaximized()
 
     sys.exit(app.exec_())

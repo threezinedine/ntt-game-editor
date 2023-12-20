@@ -5,8 +5,8 @@ from constants import *
 from components import *
 from viewmodels import *
 from nttinject import *
-
-from .NewProjectDialog import NewProjectDialog
+from ntt_signal import *
+from .NewProjectDialogView import *
 
 
 @dependency_inject(StartupWidgetViewModel)
@@ -15,6 +15,7 @@ class StartupWidgetView(QWidget):
         super().__init__()
         self._ui = Ui_StartupWidget()
         self._ui.setupUi(self)
+        self.CloseSignal = Signal()
 
         self._vmStartupWidgetViewModel = vmStartupWidgetViewModel
 
@@ -34,8 +35,10 @@ class StartupWidgetView(QWidget):
         )
 
     def _OnClicked_TemplateButton(self, strTemplateName: str) -> None:
-        wNewProjectDialog = NewProjectDialog(
+        wNewProjectDialog = NewProjectDialogView(
             self._vmStartupWidgetViewModel.TemplateNames, strTemplateName
         )
 
         bResult: bool = wNewProjectDialog.exec_()
+        if bResult:
+            self.CloseSignal.Emit()
