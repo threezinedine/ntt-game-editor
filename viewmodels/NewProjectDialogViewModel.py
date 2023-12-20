@@ -19,9 +19,12 @@ class NewProjectDialogViewModel:
         self.ProjectPathSignal = Signal(str)
         self.TemplateNameSignal = Signal(str)
         self.ProjectFullPathSignal = Signal(str)
+        self.IsValidSignal = Signal()
 
         self.ProjectNameSignal.Attach(self.ProjectFullPathSignal)
         self.ProjectPathSignal.Attach(self.ProjectFullPathSignal)
+        self.ProjectNameSignal.Attach(self.IsValidSignal)
+        self.ProjectPathSignal.Attach(self.IsValidSignal)
 
     @property
     def ProjectName(self) -> str:
@@ -66,3 +69,10 @@ class NewProjectDialogViewModel:
     @IsProject.setter
     def IsProject(self, bIsProject: bool) -> None:
         self._bIsProject = bIsProject
+
+    @property
+    def IsValid(self) -> bool:
+        return not self._strProjectName != ""
+
+    def CreateNewProject(self) -> None:
+        pass

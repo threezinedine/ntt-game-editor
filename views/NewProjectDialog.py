@@ -42,9 +42,14 @@ class NewProjectDialog(QDialog):
         self._vmNewProjectDialogViewModel.TemplateNameSignal.Connect(
             self._OnTemplateNameChanged
         )
+        self._vmNewProjectDialogViewModel.IsValidSignal.Connect(
+            self._OnProjectIsValidChanged
+        )
 
         self._ui.browseButton.clicked.connect(self._OnClickedBrowseButton)
         self._ui.nameLineEdit.textChanged.connect(self._OnTextChangedProjectName)
+        self._ui.cancelButton.clicked.connect(self._OnClickedCancelButton)
+        self._ui.newButton.clicked.connect(self._OnClickedNewButton)
 
     def _OnProjectNameChanged(self, strProjectName: str) -> None:
         self._ui.nameLineEdit.setText(strProjectName)
@@ -57,6 +62,9 @@ class NewProjectDialog(QDialog):
 
     def _OnTextChangedProjectName(self, strText: str) -> None:
         self._vmNewProjectDialogViewModel.ProjectName = strText
+
+    def _OnProjectIsValidChanged(self) -> None:
+        self._ui.newButton.setDisabled(self._vmNewProjectDialogViewModel.IsValid)
 
     def _OnClickedBrowseButton(self) -> None:
         options = QFileDialog.Options()
@@ -74,3 +82,10 @@ class NewProjectDialog(QDialog):
             self._vmNewProjectDialogViewModel.ProjectPath = strFolderPath
         else:
             pass
+
+    def _OnClickedCancelButton(self) -> None:
+        self.reject()
+
+    def _OnClickedNewButton(self) -> None:
+        self._vmNewProjectDialogViewModel.CreateNewProject()
+        self.accept()
