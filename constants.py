@@ -8,3 +8,6 @@ PROJECT_EXTENSION = "nttproj"
 UNTILTLED_PROJECT_NAME = "Untiltled"
 
 EDITOR_WINDOW_TITLE = "NTT Engine"
+
+EDITOR_DATA_JSON = "assets/editor/data.json"
+EDITOR_SETTING_JSON = "assets/editor/setting.json"

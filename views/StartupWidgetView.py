@@ -7,6 +7,7 @@ from viewmodels import *
 from nttinject import *
 from ntt_signal import *
 from .NewProjectDialogView import *
+from utils import *
 
 
 @dependency_inject(StartupWidgetViewModel)
@@ -20,7 +21,11 @@ class StartupWidgetView(QWidget):
         self._vmStartupWidgetViewModel = vmStartupWidgetViewModel
 
         self._LoadTemplates()
+        self._LoadRecentProjects()
         self._ui.browseProjectButton.clicked.connect(self._OnClicked_BrowseProject)
+        self._ui.clearRecentProjectsButton.clicked.connect(
+            self._OnClicked_ClearRecentProjectsButton
+        )
 
         self._vmStartupWidgetViewModel.OpenProjectErrorSignal.Connect(
             self._OnOpenProjectErrorRaise
@@ -34,6 +39,18 @@ class StartupWidgetView(QWidget):
             self._ui.templatesLayout.addWidget(wTemplateLabel)
 
         self._ui.templatesLayout.addItem(
+            QSpacerItem(
+                20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+            )
+        )
+
+    def _LoadRecentProjects(self) -> None:
+        for strProjectFile in reversed(self._vmStartupWidgetViewModel.RecentProjects):
+            wProjectLabel = DoubleClickedLabel(strProjectFile)
+            # wProjectLabel.onDoubleClicked.Connect(self._OnClicked_TemplateButton)
+            self._ui.recentProjectsLayout.addWidget(wProjectLabel)
+
+        self._ui.recentProjectsLayout.addItem(
             QSpacerItem(
                 20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
             )
@@ -69,3 +86,7 @@ class StartupWidgetView(QWidget):
             bResult = self._vmStartupWidgetViewModel.OpenProject(strFile)
             if bResult:
                 self.CloseSignal.Emit()
+
+    def _OnClicked_ClearRecentProjectsButton(self) -> None:
+        self._vmStartupWidgetViewModel.ClearRecentProjects()
+        ClearLayoutItem(self._ui.recentProjectsLayout)

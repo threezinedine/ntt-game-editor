@@ -14,11 +14,13 @@ if __name__ == "__main__":
 
         # Models registration
         injector.AddSingleton(Project, lambda: Project())
+        injector.AddSingleton(EditorData, lambda: EditorData())
 
         # Services registration
         injector.AddSingleton(IFileSystemService, lambda: Create_FileSystemService())
         injector.AddSingleton(ITemplateService, lambda: Create_TemplateService())
         injector.AddSingleton(IProjectService, lambda: Create_ProjectService())
+        injector.AddSingleton(IEditorService, lambda: Create_EditorService())
 
         # ViewModels registration
         injector.AddTransient(
@@ -43,4 +45,5 @@ if __name__ == "__main__":
     except:
         # except Exception as e:
         # print(e)
-        input()
+        # input()
+        pass

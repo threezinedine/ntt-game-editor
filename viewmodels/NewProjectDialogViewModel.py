@@ -10,15 +10,17 @@ from constants import *
 from ntt_json_model import *
 
 
-@dependency_inject(IProjectService, IFileSystemService)
+@dependency_inject(IProjectService, IFileSystemService, IEditorService)
 class NewProjectDialogViewModel:
     def __init__(
         self,
         serProjectService: IProjectService,
         serFileSystemService: IFileSystemService,
+        serEditorService: IEditorService,
     ) -> None:
         self._serProjectService = serProjectService
         self._serFileSystemService = serFileSystemService
+        self._serEditorService = serEditorService
 
         self._strProjectName: str = ""
         self._strProjectPath: str = ""
@@ -99,9 +101,20 @@ class NewProjectDialogViewModel:
         )
 
     def CreateNewProject(self) -> bool:
-        return self._serProjectService.CreateProject(
+        bResult = self._serProjectService.CreateProject(
             self._strProjectName,
             self._strProjectPath,
             self._strTemplateName,
             self._bIsProject,
         )
+
+        if bResult:
+            self._serEditorService.AppendNewRecentProject(
+                os.path.join(
+                    self._strProjectPath,
+                    self._strProjectName,
+                    f"{self._strProjectName}.{PROJECT_EXTENSION}",
+                )
+            )
+
+        return bResult
