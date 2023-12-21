@@ -20,6 +20,11 @@ class StartupWidgetView(QWidget):
         self._vmStartupWidgetViewModel = vmStartupWidgetViewModel
 
         self._LoadTemplates()
+        self._ui.browseProjectButton.clicked.connect(self._OnClicked_BrowseProject)
+
+        self._vmStartupWidgetViewModel.OpenProjectErrorSignal.Connect(
+            self._OnOpenProjectErrorRaise
+        )
 
     def _LoadTemplates(self) -> None:
         for strTemplateInfo in self._vmStartupWidgetViewModel.TemplatesInfo:
@@ -42,3 +47,25 @@ class StartupWidgetView(QWidget):
         bResult: bool = wNewProjectDialog.exec_()
         if bResult:
             self.CloseSignal.Emit()
+
+    def _OnOpenProjectErrorRaise(self, strErrorMessage: str) -> None:
+        QMessageBox.critical(self, "Open Project Failed", strErrorMessage)
+
+    def _OnClicked_BrowseProject(self) -> None:
+        options = QFileDialog.Options()
+
+        wFileDialog = QFileDialog(self, options=options)
+        wFileDialog.setNameFilter("Text Files (*.txt);;All Files (*)")
+
+        strFile, _ = QFileDialog().getOpenFileName(
+            self,
+            "Choose Project",
+            DEFAULT_PROJECT_PATH,
+            f"NTT Engine Project (*.{PROJECT_EXTENSION})",
+            options=options,
+        )
+
+        if strFile:
+            bResult = self._vmStartupWidgetViewModel.OpenProject(strFile)
+            if bResult:
+                self.CloseSignal.Emit()

@@ -11,6 +11,7 @@ class IProjectService(ABC):
     def __init__(self) -> None:
         super().__init__()
         self.ServiceErrorSignal = Signal(str)
+        self.OpenProjectServiceErrorSignal = Signal(str)
 
     @abstractmethod
     def CreateProject(
@@ -20,6 +21,10 @@ class IProjectService(ABC):
         strTemplateName: str,
         bIsProject: str,
     ) -> bool:
+        pass
+
+    @abstractmethod
+    def OpenProject(self, strProjectFile: str) -> bool:
         pass
 
 
@@ -89,6 +94,14 @@ class ProjectService(IProjectService):
             return True
         except Exception as e:
             self.ServiceErrorSignal.Emit(str(e))
+            return False
+
+    def OpenProject(self, strProjectFile: str) -> bool:
+        try:
+            self._mProject.FromFile(strProjectFile)
+            return True
+        except Exception as e:
+            self.OpenProjectServiceErrorSignal.Emit(str(e))
             return False
 
 

@@ -9,29 +9,38 @@ from services import *
 
 
 if __name__ == "__main__":
-    injector = Injector()
+    try:
+        injector = Injector()
 
-    # Models registration
-    injector.AddSingleton(Project, lambda: Project())
+        # Models registration
+        injector.AddSingleton(Project, lambda: Project())
 
-    # Services registration
-    injector.AddSingleton(IFileSystemService, lambda: Create_FileSystemService())
-    injector.AddSingleton(ITemplateService, lambda: Create_TemplateService())
-    injector.AddSingleton(IProjectService, lambda: Create_ProjectService())
+        # Services registration
+        injector.AddSingleton(IFileSystemService, lambda: Create_FileSystemService())
+        injector.AddSingleton(ITemplateService, lambda: Create_TemplateService())
+        injector.AddSingleton(IProjectService, lambda: Create_ProjectService())
 
-    # ViewModels registration
-    injector.AddSingleton(StartupWidgetViewModel, lambda: StartupWidgetViewModel())
-    injector.AddTransient(
-        NewProjectDialogViewModel, lambda: NewProjectDialogViewModel()
-    )
-    injector.AddSingleton(
-        GameEditorCentralWidgetViewModel, lambda: GameEditorCentralWidgetViewModel()
-    )
-    injector.AddSingleton(LogDockWidgetViewModel, lambda: LogDockWidgetViewModel())
+        # ViewModels registration
+        injector.AddTransient(
+            NewProjectDialogViewModel, lambda: NewProjectDialogViewModel()
+        )
+        injector.AddSingleton(
+            GameEditorCentralWidgetViewModel, lambda: GameEditorCentralWidgetViewModel()
+        )
+        injector.AddSingleton(StartupWidgetViewModel, lambda: StartupWidgetViewModel())
+        injector.AddSingleton(
+            GameEditorWindowViewModel, lambda: GameEditorWindowViewModel()
+        )
+        injector.AddSingleton(LogDockWidgetViewModel, lambda: LogDockWidgetViewModel())
 
-    app = QApplication(sys.argv)
+        app = QApplication(sys.argv)
 
-    window = StartupWindowView(GameEditorWindowView())
-    window.showMaximized()
+        window = StartupWindowView(GameEditorWindowView())
+        window.showMaximized()
 
-    sys.exit(app.exec_())
+        sys.exit(app.exec_())
+
+    except:
+        # except Exception as e:
+        # print(e)
+        input()

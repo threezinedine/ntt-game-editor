@@ -1,7 +1,16 @@
+altgraph==0.17.4
+importlib-metadata==7.0.0
 ntt-injector==1.1.0
 ntt-json-model==1.0.2
 ntt-observable-list==1.0.0
 ntt-signal==1.0.3
+packaging==23.2
+pefile==2023.2.7
+pyinstaller==6.3.0
+pyinstaller-hooks-contrib==2023.11
 PyQt5==5.15.10
 PyQt5-Qt5==5.15.2
 PyQt5-sip==12.13.0
+pyuic5-tool==0.0.1
+pywin32-ctypes==0.2.2
+zipp==3.17.0
