@@ -26,9 +26,11 @@ class NewProjectDialogView(QDialog):
             self._ui.templateComboBox.addItem(strName)
 
         self._Init()
-
-        self._vmNewProjectDialogViewModel.ProjectName = UNTILTLED_PROJECT_NAME
         self._vmNewProjectDialogViewModel.TemplateName = strTemplateName
+        self._Reset()
+
+    def _Reset(self) -> None:
+        self._vmNewProjectDialogViewModel.ProjectName = UNTILTLED_PROJECT_NAME
         self._vmNewProjectDialogViewModel.ProjectPath = DEFAULT_PROJECT_PATH
 
     def _Init(self) -> None:
@@ -44,6 +46,9 @@ class NewProjectDialogView(QDialog):
         )
         self._vmNewProjectDialogViewModel.IsValidSignal.Connect(
             self._OnProjectIsValidChanged
+        )
+        self._vmNewProjectDialogViewModel.CreateProjectErrorSignal.Connect(
+            self._OnCreateProjectRaiseError
         )
 
         self._ui.browseButton.clicked.connect(self._OnClickedBrowseButton)
@@ -64,7 +69,7 @@ class NewProjectDialogView(QDialog):
         self._vmNewProjectDialogViewModel.ProjectName = strText
 
     def _OnProjectIsValidChanged(self) -> None:
-        self._ui.newButton.setDisabled(self._vmNewProjectDialogViewModel.IsValid)
+        self._ui.newButton.setEnabled(self._vmNewProjectDialogViewModel.IsValid)
 
     def _OnClickedBrowseButton(self) -> None:
         options = QFileDialog.Options()
@@ -87,5 +92,11 @@ class NewProjectDialogView(QDialog):
         self.reject()
 
     def _OnClickedNewButton(self) -> None:
-        self._vmNewProjectDialogViewModel.CreateNewProject()
-        self.accept()
+        bResult = self._vmNewProjectDialogViewModel.CreateNewProject()
+        if bResult:
+            self.accept()
+        else:
+            self._Reset()
+
+    def _OnCreateProjectRaiseError(self, strErrorMessage: str) -> None:
+        QMessageBox.critical(self, "Create Project Error", strErrorMessage)

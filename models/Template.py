@@ -6,10 +6,15 @@ class Template(ModelBase):
         super().__init__()
 
         StrProperty(self, "", "_strTemplateName")
+        ListProperty(self, [], "_strFolders")
 
     @property
     def TemplateName(self) -> str:
         return self._strTemplateName.GetValue()
+
+    @property
+    def Folders(self) -> List[str]:
+        return self._strFolders.GetValue()
 
     def __repr__(self) -> str:
         return f'<Template id={id(self)} name="{self._strTemplateName}"/>'

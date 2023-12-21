@@ -5,4 +5,4 @@ TEMPLATES_FOLDER = "assets/templates"
 DEFAULT_PROJECT_PATH = "C:/GameProjects"
 
 PROJECT_EXTENSION = "nttproj"
-UNTILTLED_PROJECT_NAME = "untiltled"
+UNTILTLED_PROJECT_NAME = "Untiltled"

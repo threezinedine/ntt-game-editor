@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_NewProjectDialog(object):
     def setupUi(self, NewProjectDialog):
         NewProjectDialog.setObjectName("NewProjectDialog")
-        NewProjectDialog.resize(400, 300)
+        NewProjectDialog.resize(619, 410)
         self.verticalLayout = QtWidgets.QVBoxLayout(NewProjectDialog)
         self.verticalLayout.setObjectName("verticalLayout")
         self.frame_2 = QtWidgets.QFrame(NewProjectDialog)
