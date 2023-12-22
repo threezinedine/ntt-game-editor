@@ -12,24 +12,35 @@ if __name__ == "__main__":
         injector = nttinject.Injector()
 
         # Models registration
-        injector.AddSingleton(models.Project, lambda: models.Project())
-        injector.AddSingleton(models.EditorData, lambda: models.EditorData())
+        injector.AddSingleton(
+            models.Project,
+            lambda: models.Project(),
+        )
+        injector.AddSingleton(
+            models.EditorData,
+            lambda: models.EditorData(),
+        )
 
         # Services registration
         injector.AddSingleton(
-            services.ILogService, lambda: services.Create_LogService()
+            services.ILogService,
+            lambda: services.Create_LogService(),
         )
         injector.AddSingleton(
-            services.IFileSystemService, lambda: services.Create_FileSystemService()
+            services.IFileSystemService,
+            lambda: services.Create_FileSystemService(),
         )
         injector.AddSingleton(
-            services.ITemplateService, lambda: services.Create_TemplateService()
+            services.ITemplateService,
+            lambda: services.Create_TemplateService(),
         )
         injector.AddSingleton(
-            services.IProjectService, lambda: services.Create_ProjectService()
+            services.IProjectService,
+            lambda: services.Create_ProjectService(),
         )
         injector.AddSingleton(
-            services.IEditorService, lambda: services.Create_EditorService()
+            services.IEditorService,
+            lambda: services.Create_EditorService(),
         )
 
         # ViewModels registration

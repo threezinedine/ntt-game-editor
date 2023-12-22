@@ -10,7 +10,8 @@ from .LogDockWidgetView import LogDockWidgetView
 @nttinject.dependency_inject(viewmodels.GameEditorWindowViewModel)
 class GameEditorWindowView(PyQt5.QtWidgets.QMainWindow):
     def __init__(
-        self, vmGameEditorWindowViewModel: viewmodels.GameEditorWindowViewModel
+        self,
+        vmGameEditorWindowViewModel: viewmodels.GameEditorWindowViewModel,
     ) -> None:
         super().__init__()
         self._vmGameEditorWindowViewModel = vmGameEditorWindowViewModel

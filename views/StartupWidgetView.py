@@ -14,7 +14,8 @@ from .NewProjectDialogView import NewProjectDialogView
 @nttinject.dependency_inject(viewmodels.StartupWidgetViewModel)
 class StartupWidgetView(PyQt5.QtWidgets.QWidget):
     def __init__(
-        self, vmStartupWidgetViewModel: viewmodels.StartupWidgetViewModel
+        self,
+        vmStartupWidgetViewModel: viewmodels.StartupWidgetViewModel,
     ) -> None:
         super().__init__()
         self._ui = ui.Ui_StartupWidget()

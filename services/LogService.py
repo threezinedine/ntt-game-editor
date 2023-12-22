@@ -124,7 +124,9 @@ class LogService(ILogService):
         self._oLogger.addHandler(EngineLoggingHandler(self))
 
         hFileHanlder = logging.FileHandler(
-            f"assets/editor/log/editor-log-{datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H-%M-%S')}.txt"
+            "assets/editor/log/editor-log-"
+            f"{datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H-%M-%S')}"
+            ".txt"
         )
         hFileHanlder.setFormatter(
             logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")

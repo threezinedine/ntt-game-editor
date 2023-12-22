@@ -6,7 +6,10 @@ import ntt_signal
 
 @nttinject.dependency_inject(models.Project)
 class GameEditorWindowViewModel:
-    def __init__(self, mProject: models.Project) -> None:
+    def __init__(
+        self,
+        mProject: models.Project,
+    ) -> None:
         self._mProject = mProject
 
         self.EditorWindowTitleChangedSignal = ntt_signal.Signal()

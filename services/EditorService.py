@@ -25,7 +25,10 @@ class IEditorService(abc.ABC):
 
 @nttinject.dependency_inject(models.EditorData)
 class EditorService(IEditorService):
-    def __init__(self, mEditorData: models.EditorData) -> None:
+    def __init__(
+        self,
+        mEditorData: models.EditorData,
+    ) -> None:
         super().__init__()
         self._mEditorData = mEditorData
 

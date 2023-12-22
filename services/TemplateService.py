@@ -14,7 +14,10 @@ class ITemplateService(abc.ABC):
 
 @nttinject.dependency_inject(IFileSystemService)
 class TemplateService(ITemplateService):
-    def __init__(self, serFileSystemService: IFileSystemService) -> None:
+    def __init__(
+        self,
+        serFileSystemService: IFileSystemService,
+    ) -> None:
         self._serFileSystemService = serFileSystemService
 
     def LoadAllTemplates(self) -> typing.List[models.Template]:

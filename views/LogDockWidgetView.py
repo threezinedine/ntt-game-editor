@@ -7,7 +7,8 @@ import viewmodels
 @nttinject.dependency_inject(viewmodels.LogDockWidgetViewModel)
 class LogDockWidgetView(PyQt5.QtWidgets.QWidget):
     def __init__(
-        self, vmLogDockWidgetViewModel: viewmodels.LogDockWidgetViewModel
+        self,
+        vmLogDockWidgetViewModel: viewmodels.LogDockWidgetViewModel,
     ) -> None:
         super().__init__()
 

@@ -6,7 +6,10 @@ import ntt_signal
 
 @nttinject.dependency_inject(services.ILogService)
 class LogDockWidgetViewModel:
-    def __init__(self, serLogService: services.ILogService) -> None:
+    def __init__(
+        self,
+        serLogService: services.ILogService,
+    ) -> None:
         self._serLogService = serLogService
 
         self.NewLogMessgeSignal = ntt_signal.Signal()

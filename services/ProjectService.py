@@ -53,7 +53,8 @@ class ProjectService(IProjectService):
         strProjectFolder = os.path.join(strProjectPath, strProjectName)
         strTemplateFolder = os.path.join(constants.TEMPLATES_FOLDER, strTemplateName)
         strTemplateJsonFile = os.path.join(
-            strTemplateFolder, constants.TEMPLATE_JSON_FILE
+            strTemplateFolder,
+            constants.TEMPLATE_JSON_FILE,
         )
 
         mTemplate = models.Template()
@@ -64,7 +65,9 @@ class ProjectService(IProjectService):
         if bResult:
             for strFolder in mTemplate.Folders:
                 bResult, strMessage = self._serFileSystemService.CopyFolderTo(
-                    strTemplateFolder, strProjectFolder, strFolder
+                    strTemplateFolder,
+                    strProjectFolder,
+                    strFolder,
                 )
 
                 if not bResult:
@@ -102,7 +105,8 @@ class ProjectService(IProjectService):
 
             self._mProject.ToFile(
                 os.path.join(
-                    strProjectFolder, f"{strProjectName}.{constants.PROJECT_EXTENSION}"
+                    strProjectFolder,
+                    f"{strProjectName}.{constants.PROJECT_EXTENSION}",
                 )
             )
             return True

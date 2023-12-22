@@ -6,7 +6,9 @@ import ntt_signal
 
 
 @nttinject.dependency_inject(
-    services.ITemplateService, services.IProjectService, services.IEditorService
+    services.ITemplateService,
+    services.IProjectService,
+    services.IEditorService,
 )
 class StartupWidgetViewModel:
     def __init__(
