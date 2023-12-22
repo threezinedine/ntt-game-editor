@@ -161,3 +161,4 @@ cython_debug/
 
 
 *.bat
+assets/editor/log/*.txt
