@@ -1,19 +1,17 @@
-from PyQt5.QtWidgets import *
-from constants import *
-from typing import *
-from viewmodels import *
-from services import *
-from ui import *
-from nttinject import *
+import PyQt5
+import viewmodels
+import ui
+import nttinject
 
 
-@dependency_inject(GameEditorCentralWidgetViewModel)
-class GameEditorCentralWidgetView(QWidget):
+@nttinject.dependency_inject(viewmodels.GameEditorCentralWidgetViewModel)
+class GameEditorCentralWidgetView(PyQt5.QtWidgets.QWidget):
     def __init__(
-        self, vmGameEditorCentralWidgetViewModel: GameEditorCentralWidgetViewModel
+        self,
+        vmGameEditorCentralWidgetViewModel: viewmodels.GameEditorCentralWidgetViewModel,
     ) -> None:
         super().__init__()
         self._vmGameEditorCentralWidgetViewModel = vmGameEditorCentralWidgetViewModel
 
-        self._ui = Ui_GameEditorCentralWidget()
+        self._ui = ui.Ui_GameEditorCentralWidget()
         self._ui.setupUi(self)

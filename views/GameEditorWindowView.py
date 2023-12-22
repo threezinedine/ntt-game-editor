@@ -1,20 +1,21 @@
-from PyQt5.QtWidgets import *
-from viewmodels import *
-from constants import *
-from typing import *
-from ui import *
+import PyQt5
+import viewmodels
+import ui
+import nttinject
 
 from .GameEditorCentralWidgetView import GameEditorCentralWidgetView
-from .LogDockWidgetView import *
+from .LogDockWidgetView import LogDockWidgetView
 
 
-@dependency_inject(GameEditorWindowViewModel)
-class GameEditorWindowView(QMainWindow):
-    def __init__(self, vmGameEditorWindowViewModel: GameEditorWindowViewModel) -> None:
+@nttinject.dependency_inject(viewmodels.GameEditorWindowViewModel)
+class GameEditorWindowView(PyQt5.QtWidgets.QMainWindow):
+    def __init__(
+        self, vmGameEditorWindowViewModel: viewmodels.GameEditorWindowViewModel
+    ) -> None:
         super().__init__()
         self._vmGameEditorWindowViewModel = vmGameEditorWindowViewModel
 
-        self._ui = Ui_GameEditorWindow()
+        self._ui = ui.Ui_GameEditorWindow()
         self._ui.setupUi(self)
 
         self.setCentralWidget(GameEditorCentralWidgetView())

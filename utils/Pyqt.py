@@ -1,7 +1,7 @@
-from PyQt5.QtWidgets import *
+import PyQt5
 
 
-def ClearLayoutItem(layout: QLayout):
+def ClearLayoutItem(layout: PyQt5.QtWidgets.QLayout):
     while layout.count():
         item = layout.takeAt(0)
         widget = item.widget()

@@ -1,10 +1,10 @@
 import os
-from constants import *
+import constants
 
 
 class CssLoader:
     def __init__(self, strCssFile) -> None:
-        with open(os.path.join(CSS_FOLDER, strCssFile), "r") as file:
+        with open(os.path.join(constants.CSS_FOLDER, strCssFile), "r") as file:
             self._strContent = file.read()
 
     @property

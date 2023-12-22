@@ -1,25 +1,24 @@
-from PyQt5.QtWidgets import *
-from typing import *
-from viewmodels import *
-from models import *
-from constants import *
-from ui import *
-from nttinject import *
+import PyQt5
+import typing
+import viewmodels
+import constants
+import ui
+import nttinject
 
 
-@dependency_inject(NewProjectDialogViewModel)
-class NewProjectDialogView(QDialog):
+@nttinject.dependency_inject(viewmodels.NewProjectDialogViewModel)
+class NewProjectDialogView(PyQt5.QtWidgets.QDialog):
     def __init__(
         self,
-        vmNewProjectDialogViewModel: NewProjectDialogViewModel,
-        strTemplateNames: List[str],
+        vmNewProjectDialogViewModel: viewmodels.NewProjectDialogViewModel,
+        strTemplateNames: typing.List[str],
         strTemplateName: str,
     ) -> None:
         super().__init__()
 
         self._vmNewProjectDialogViewModel = vmNewProjectDialogViewModel
         self._strTemplateName = strTemplateName
-        self._ui = Ui_NewProjectDialog()
+        self._ui = ui.Ui_NewProjectDialog()
         self._ui.setupUi(self)
 
         for strName in strTemplateNames:
@@ -30,8 +29,8 @@ class NewProjectDialogView(QDialog):
         self._Reset()
 
     def _Reset(self) -> None:
-        self._vmNewProjectDialogViewModel.ProjectName = UNTILTLED_PROJECT_NAME
-        self._vmNewProjectDialogViewModel.ProjectPath = DEFAULT_PROJECT_PATH
+        self._vmNewProjectDialogViewModel.ProjectName = constants.UNTILTLED_PROJECT_NAME
+        self._vmNewProjectDialogViewModel.ProjectPath = constants.DEFAULT_PROJECT_PATH
 
     def _Init(self) -> None:
         self._vmNewProjectDialogViewModel.ProjectNameSignal.Connect(
@@ -72,11 +71,11 @@ class NewProjectDialogView(QDialog):
         self._ui.newButton.setEnabled(self._vmNewProjectDialogViewModel.IsValid)
 
     def _OnClickedBrowseButton(self) -> None:
-        options = QFileDialog.Options()
+        options = PyQt5.QtWidgetsQFileDialog.Options()
 
-        options |= QFileDialog.ShowDirsOnly
+        options |= PyQt5.QtWidgets.QFileDialog.ShowDirsOnly
 
-        strFolderPath: str = QFileDialog.getExistingDirectory(
+        strFolderPath: str = PyQt5.QtWidgets.QFileDialog.getExistingDirectory(
             self,
             "Choose Folder",
             self._vmNewProjectDialogViewModel.ProjectPath,
@@ -99,4 +98,6 @@ class NewProjectDialogView(QDialog):
             self._Reset()
 
     def _OnCreateProjectRaiseError(self, strErrorMessage: str) -> None:
-        QMessageBox.critical(self, "Create Project Error", strErrorMessage)
+        PyQt5.QtWidgets.QMessageBox.critical(
+            self, "Create Project Error", strErrorMessage
+        )

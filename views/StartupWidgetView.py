@@ -1,22 +1,25 @@
-from typing import *
-from PyQt5.QtWidgets import *
-from ui import *
-from constants import *
-from components import *
-from viewmodels import *
-from nttinject import *
-from ntt_signal import *
-from .NewProjectDialogView import *
-from utils import *
+import typing
+import PyQt5
+import ui
+import constants
+import components
+import nttinject
+import ntt_signal
+import viewmodels
+import utils
+
+from .NewProjectDialogView import NewProjectDialogView
 
 
-@dependency_inject(StartupWidgetViewModel)
-class StartupWidgetView(QWidget):
-    def __init__(self, vmStartupWidgetViewModel: StartupWidgetViewModel) -> None:
+@nttinject.dependency_inject(viewmodels.StartupWidgetViewModel)
+class StartupWidgetView(PyQt5.QtWidgets.QWidget):
+    def __init__(
+        self, vmStartupWidgetViewModel: viewmodels.StartupWidgetViewModel
+    ) -> None:
         super().__init__()
-        self._ui = Ui_StartupWidget()
+        self._ui = ui.Ui_StartupWidget()
         self._ui.setupUi(self)
-        self.CloseSignal = Signal()
+        self.CloseSignal = ntt_signal.Signal()
 
         self._vmStartupWidgetViewModel = vmStartupWidgetViewModel
 
@@ -34,25 +37,31 @@ class StartupWidgetView(QWidget):
     def _LoadTemplates(self) -> None:
         for strTemplateInfo in self._vmStartupWidgetViewModel.TemplatesInfo:
             strTemplateName = strTemplateInfo
-            wTemplateLabel = DoubleClickedLabel(strTemplateName)
+            wTemplateLabel = components.DoubleClickedLabel(strTemplateName)
             wTemplateLabel.onDoubleClicked.Connect(self._OnClicked_TemplateButton)
             self._ui.templatesLayout.addWidget(wTemplateLabel)
 
         self._ui.templatesLayout.addItem(
-            QSpacerItem(
-                20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+            PyQt5.QtWidgets.QSpacerItem(
+                20,
+                40,
+                PyQt5.QtWidgets.QSizePolicy.Minimum,
+                PyQt5.QtWidgets.QSizePolicy.Expanding,
             )
         )
 
     def _LoadRecentProjects(self) -> None:
         for strProjectFile in reversed(self._vmStartupWidgetViewModel.RecentProjects):
-            wProjectLabel = DoubleClickedLabel(strProjectFile)
+            wProjectLabel = components.DoubleClickedLabel(strProjectFile)
             # wProjectLabel.onDoubleClicked.Connect(self._OnClicked_TemplateButton)
             self._ui.recentProjectsLayout.addWidget(wProjectLabel)
 
         self._ui.recentProjectsLayout.addItem(
-            QSpacerItem(
-                20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+            PyQt5.QtWidgets.QSpacerItem(
+                20,
+                40,
+                PyQt5.QtWidgets.QSizePolicy.Minimum,
+                PyQt5.QtWidgets.QSizePolicy.Expanding,
             )
         )
 
@@ -66,19 +75,21 @@ class StartupWidgetView(QWidget):
             self.CloseSignal.Emit()
 
     def _OnOpenProjectErrorRaise(self, strErrorMessage: str) -> None:
-        QMessageBox.critical(self, "Open Project Failed", strErrorMessage)
+        PyQt5.QtWidgets.QMessageBox.critical(
+            self, "Open Project Failed", strErrorMessage
+        )
 
     def _OnClicked_BrowseProject(self) -> None:
-        options = QFileDialog.Options()
+        options = PyQt5.QtWidgets.QFileDialog.Options()
 
-        wFileDialog = QFileDialog(self, options=options)
+        wFileDialog = PyQt5.QtWidgets.QFileDialog(self, options=options)
         wFileDialog.setNameFilter("Text Files (*.txt);;All Files (*)")
 
-        strFile, _ = QFileDialog().getOpenFileName(
+        strFile, _ = PyQt5.QtWidgets.QFileDialog().getOpenFileName(
             self,
             "Choose Project",
-            DEFAULT_PROJECT_PATH,
-            f"NTT Engine Project (*.{PROJECT_EXTENSION})",
+            constants.DEFAULT_PROJECT_PATH,
+            f"NTT Engine Project (*.{constants.PROJECT_EXTENSION})",
             options=options,
         )
 
@@ -89,4 +100,4 @@ class StartupWidgetView(QWidget):
 
     def _OnClicked_ClearRecentProjectsButton(self) -> None:
         self._vmStartupWidgetViewModel.ClearRecentProjects()
-        ClearLayoutItem(self._ui.recentProjectsLayout)
+        utils.ClearLayoutItem(self._ui.recentProjectsLayout)

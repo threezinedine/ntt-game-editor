@@ -1,32 +1,31 @@
-from typing import *
-from abc import *
-from typing import List
-from models import *
-from nttinject import *
+import typing
+import abc
+import models
+import nttinject
 
 from .FileSystemService import IFileSystemService
 
 
-class ITemplateService(ABC):
-    @abstractmethod
-    def LoadAllTemplates(self) -> List[Template]:
+class ITemplateService(abc.ABC):
+    @abc.abstractmethod
+    def LoadAllTemplates(self) -> typing.List[models.Template]:
         pass
 
 
-@dependency_inject(IFileSystemService)
+@nttinject.dependency_inject(IFileSystemService)
 class TemplateService(ITemplateService):
     def __init__(self, serFileSystemService: IFileSystemService) -> None:
         self._serFileSystemService = serFileSystemService
 
-    def LoadAllTemplates(self) -> List[Template]:
-        mTemplates: List[Template] = []
+    def LoadAllTemplates(self) -> typing.List[models.Template]:
+        mTemplates: typing.List[models.Template] = []
 
-        strTemplateJsonFiles: List[
+        strTemplateJsonFiles: typing.List[
             str
         ] = self._serFileSystemService.GetAllTemplateJsonFilesFullPaths()
 
         for strTemplateJsonFile in strTemplateJsonFiles:
-            mTemplate = Template()
+            mTemplate = models.Template()
             mTemplate.FromFile(strTemplateJsonFile)
             mTemplates.append(mTemplate)
 

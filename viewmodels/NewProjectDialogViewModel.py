@@ -1,22 +1,19 @@
 import os
-import shutil
-from PyQt5.QtWidgets import *
-from typing import *
-from models import *
-from services import *
-from nttinject import *
-from ntt_signal import *
-from constants import *
-from ntt_json_model import *
+import services
+import nttinject
+import constants
+import ntt_signal
 
 
-@dependency_inject(IProjectService, IFileSystemService, IEditorService)
+@nttinject.dependency_inject(
+    services.IProjectService, services.IFileSystemService, services.IEditorService
+)
 class NewProjectDialogViewModel:
     def __init__(
         self,
-        serProjectService: IProjectService,
-        serFileSystemService: IFileSystemService,
-        serEditorService: IEditorService,
+        serProjectService: services.IProjectService,
+        serFileSystemService: services.IFileSystemService,
+        serEditorService: services.IEditorService,
     ) -> None:
         self._serProjectService = serProjectService
         self._serFileSystemService = serFileSystemService
@@ -27,12 +24,12 @@ class NewProjectDialogViewModel:
         self._strTemplateName: str = ""
         self._bIsProject: bool = True
 
-        self.ProjectNameSignal = Signal(str)
-        self.ProjectPathSignal = Signal(str)
-        self.TemplateNameSignal = Signal(str)
-        self.ProjectFullPathSignal = Signal(str)
-        self.IsValidSignal = Signal()
-        self.CreateProjectErrorSignal = Signal(str)
+        self.ProjectNameSignal = ntt_signal.Signal(str)
+        self.ProjectPathSignal = ntt_signal.Signal(str)
+        self.TemplateNameSignal = ntt_signal.Signal(str)
+        self.ProjectFullPathSignal = ntt_signal.Signal(str)
+        self.IsValidSignal = ntt_signal.Signal()
+        self.CreateProjectErrorSignal = ntt_signal.Signal(str)
 
         self.ProjectNameSignal.Attach(self.ProjectFullPathSignal)
         self.ProjectPathSignal.Attach(self.ProjectFullPathSignal)
@@ -65,7 +62,7 @@ class NewProjectDialogViewModel:
         return os.path.join(
             self._strProjectPath,
             self._strProjectName,
-            f"{self._strProjectName}.{PROJECT_EXTENSION}",
+            f"{self._strProjectName}.{constants.PROJECT_EXTENSION}",
         )
 
     @property
@@ -113,7 +110,7 @@ class NewProjectDialogViewModel:
                 os.path.join(
                     self._strProjectPath,
                     self._strProjectName,
-                    f"{self._strProjectName}.{PROJECT_EXTENSION}",
+                    f"{self._strProjectName}.{constants.PROJECT_EXTENSION}",
                 )
             )
 

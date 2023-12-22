@@ -1,20 +1,17 @@
-from nttinject import *
-from models import *
-from services import *
-from typing import *
-from constants import *
-from nttinject import *
-from ntt_signal import *
+import nttinject
+import models
+import constants
+import ntt_signal
 
 
-@dependency_inject(Project)
+@nttinject.dependency_inject(models.Project)
 class GameEditorWindowViewModel:
-    def __init__(self, mProject: Project) -> None:
+    def __init__(self, mProject: models.Project) -> None:
         self._mProject = mProject
 
-        self.EditorWindowTitleChangedSignal = Signal()
+        self.EditorWindowTitleChangedSignal = ntt_signal.Signal()
         self._mProject.Attach(self.EditorWindowTitleChangedSignal)
 
     @property
     def WindowTitle(self) -> str:
-        return f"{EDITOR_WINDOW_TITLE} - {self._mProject.ProjectName}"
+        return f"{constants.EDITOR_WINDOW_TITLE} - {self._mProject.ProjectName}"

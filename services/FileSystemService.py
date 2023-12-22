@@ -1,31 +1,32 @@
 import shutil
-from typing import *
-from abc import *
+import typing
+import abc
 import os
-from typing import List, Tuple, Union
-from constants import *
+import constants
 
 
-class IFileSystemService(ABC):
-    @abstractmethod
-    def GetAllTemplateJsonFilesFullPaths(self) -> List[str]:
+class IFileSystemService(abc.ABC):
+    @abc.abstractmethod
+    def GetAllTemplateJsonFilesFullPaths(self) -> typing.List[str]:
         pass
 
-    @abstractmethod
-    def CreateFolder(self, strFolderPath: str) -> Tuple[bool, Union[str, None]]:
+    @abc.abstractmethod
+    def CreateFolder(
+        self, strFolderPath: str
+    ) -> typing.Tuple[bool, typing.Union[str, None]]:
         pass
 
-    @abstractmethod
+    @abc.abstractmethod
     def CopyFolderTo(
         self, strSourceBaseFolder: str, strDesBaseFolder: str, strFolder: str
-    ) -> Tuple[bool, Union[str, None]]:
+    ) -> typing.Tuple[bool, typing.Union[str, None]]:
         pass
 
-    @abstractmethod
+    @abc.abstractmethod
     def CheckFolderExist(self, strFolderName: str) -> bool:
         pass
 
-    @abstractmethod
+    @abc.abstractmethod
     def CheckFileExist(self, strFileName: str) -> bool:
         pass
 
@@ -34,17 +35,17 @@ class FileSystemService(IFileSystemService):
     def __init__(self) -> None:
         pass
 
-    def GetAllTemplateJsonFilesFullPaths(self) -> List[str]:
-        strTemplateJsonFilesFullPaths: List[str] = []
-        strTemplateFolders: List[str] = os.listdir(TEMPLATES_FOLDER)
+    def GetAllTemplateJsonFilesFullPaths(self) -> typing.List[str]:
+        strTemplateJsonFilesFullPaths: typing.List[str] = []
+        strTemplateFolders: typing.List[str] = os.listdir(constants.TEMPLATES_FOLDER)
 
         for strTemplateFolder in strTemplateFolders:
             if self._CheckTemplateFolderValid(strTemplateFolder):
                 strTemplateJsonFilesFullPaths.append(
                     os.path.join(
-                        TEMPLATES_FOLDER,
+                        constants.TEMPLATES_FOLDER,
                         strTemplateFolder,
-                        TEMPLATE_JSON_FILE,
+                        constants.TEMPLATE_JSON_FILE,
                     )
                 )
 
@@ -54,12 +55,18 @@ class FileSystemService(IFileSystemService):
         return (
             True
             if os.path.exists(
-                os.path.join(TEMPLATES_FOLDER, strTemplateFolder, TEMPLATE_JSON_FILE)
+                os.path.join(
+                    constants.TEMPLATES_FOLDER,
+                    strTemplateFolder,
+                    constants.TEMPLATE_JSON_FILE,
+                )
             )
             else False
         )
 
-    def CreateFolder(self, strFolderPath: str) -> Tuple[bool, Union[str, None]]:
+    def CreateFolder(
+        self, strFolderPath: str
+    ) -> typing.Tuple[bool, typing.Union[str, None]]:
         try:
             os.makedirs(strFolderPath)
             return True, None
@@ -68,7 +75,7 @@ class FileSystemService(IFileSystemService):
 
     def CopyFolderTo(
         self, strSourceBaseFolder: str, strDesBaseFolder: str, strFolder: str
-    ) -> Tuple[bool, Union[str, None]]:
+    ) -> typing.Tuple[bool, typing.Union[str, None]]:
         try:
             shutil.copytree(
                 os.path.join(strSourceBaseFolder, strFolder),

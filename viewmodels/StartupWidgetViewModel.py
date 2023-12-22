@@ -1,40 +1,42 @@
-from typing import *
-from PyQt5.QtWidgets import *
-from models import *
-from services import *
-from constants import *
-from nttinject import *
-from ntt_signal import *
+import typing
+import models
+import services
+import nttinject
+import ntt_signal
 
 
-@dependency_inject(ITemplateService, IProjectService, IEditorService)
+@nttinject.dependency_inject(
+    services.ITemplateService, services.IProjectService, services.IEditorService
+)
 class StartupWidgetViewModel:
     def __init__(
         self,
-        serTemplateService: ITemplateService,
-        serProjectService: IProjectService,
-        serEditorService: IEditorService,
+        serTemplateService: services.ITemplateService,
+        serProjectService: services.IProjectService,
+        serEditorService: services.IEditorService,
     ) -> None:
         self._serTemplateService = serTemplateService
         self._serProjectService = serProjectService
         self._serEditorService = serEditorService
 
-        self._mTemplates: List[Template] = serTemplateService.LoadAllTemplates()
-        self.OpenProjectErrorSignal = Signal(str)
+        self._mTemplates: typing.List[
+            models.Template
+        ] = serTemplateService.LoadAllTemplates()
+        self.OpenProjectErrorSignal = ntt_signal.Signal(str)
         self._serProjectService.OpenProjectServiceErrorSignal.Attach(
             self.OpenProjectErrorSignal
         )
 
     @property
-    def TemplateNames(self) -> List[str]:
+    def TemplateNames(self) -> typing.List[str]:
         return [mTemplate.TemplateName for mTemplate in self._mTemplates]
 
     @property
-    def TemplatesInfo(self) -> List[Tuple[str]]:
+    def TemplatesInfo(self) -> typing.List[typing.Tuple[str]]:
         return [(mTemplate.TemplateName) for mTemplate in self._mTemplates]
 
     @property
-    def RecentProjects(self) -> List[str]:
+    def RecentProjects(self) -> typing.List[str]:
         return self._serEditorService.RecentProjects
 
     def OpenProject(self, strProjectFile: str) -> bool:

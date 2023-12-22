@@ -1,19 +1,20 @@
-from abc import *
+import abc
 import os
-from models import *
-from constants import *
-from nttinject import *
-from ntt_signal import *
+import models
+import constants
+import nttinject
+import ntt_signal
+
 from .FileSystemService import IFileSystemService
 
 
-class IProjectService(ABC):
+class IProjectService(abc.ABC):
     def __init__(self) -> None:
         super().__init__()
-        self.ServiceErrorSignal = Signal(str)
-        self.OpenProjectServiceErrorSignal = Signal(str)
+        self.ServiceErrorSignal = ntt_signal.Signal(str)
+        self.OpenProjectServiceErrorSignal = ntt_signal.Signal(str)
 
-    @abstractmethod
+    @abc.abstractmethod
     def CreateProject(
         self,
         strProjectName: str,
@@ -23,15 +24,15 @@ class IProjectService(ABC):
     ) -> bool:
         pass
 
-    @abstractmethod
+    @abc.abstractmethod
     def OpenProject(self, strProjectFile: str) -> bool:
         pass
 
 
-@dependency_inject(IFileSystemService, Project)
+@nttinject.dependency_inject(IFileSystemService, models.Project)
 class ProjectService(IProjectService):
     def __init__(
-        self, serFileSystemService: IFileSystemService, mProject: Project
+        self, serFileSystemService: IFileSystemService, mProject: models.Project
     ) -> None:
         super().__init__()
         self._serFileSystemService = serFileSystemService
@@ -45,10 +46,12 @@ class ProjectService(IProjectService):
         bIsProject: str,
     ) -> bool:
         strProjectFolder = os.path.join(strProjectPath, strProjectName)
-        strTemplateFolder = os.path.join(TEMPLATES_FOLDER, strTemplateName)
-        strTemplateJsonFile = os.path.join(strTemplateFolder, TEMPLATE_JSON_FILE)
+        strTemplateFolder = os.path.join(constants.TEMPLATES_FOLDER, strTemplateName)
+        strTemplateJsonFile = os.path.join(
+            strTemplateFolder, constants.TEMPLATE_JSON_FILE
+        )
 
-        mTemplate = Template()
+        mTemplate = models.Template()
         mTemplate.FromFile(strTemplateJsonFile)
 
         bResult, strMessage = self._serFileSystemService.CreateFolder(strProjectFolder)
@@ -79,7 +82,7 @@ class ProjectService(IProjectService):
         return True
 
     def _CreateProjectFile(
-        self, mTemplate: Template, strProjectName: str, strProjectFolder: str
+        self, mTemplate: models.Template, strProjectName: str, strProjectFolder: str
     ) -> bool:
         try:
             self._mProject.ProjectName = strProjectName
@@ -89,7 +92,9 @@ class ProjectService(IProjectService):
                 self._mProject.Folders.append(strFolder)
 
             self._mProject.ToFile(
-                os.path.join(strProjectFolder, f"{strProjectName}.{PROJECT_EXTENSION}")
+                os.path.join(
+                    strProjectFolder, f"{strProjectName}.{constants.PROJECT_EXTENSION}"
+                )
             )
             return True
         except Exception as e:

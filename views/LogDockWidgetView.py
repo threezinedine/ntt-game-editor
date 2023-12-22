@@ -1,17 +1,17 @@
-from PyQt5.QtWidgets import *
-from nttinject import *
-from ui import *
-from services import *
-from constants import *
-from viewmodels import *
+import PyQt5
+import nttinject
+import ui
+import viewmodels
 
 
-@dependency_inject(LogDockWidgetViewModel)
-class LogDockWidgetView(QWidget):
-    def __init__(self, vmLogDockWidgetViewModel: LogDockWidgetViewModel) -> None:
+@nttinject.dependency_inject(viewmodels.LogDockWidgetViewModel)
+class LogDockWidgetView(PyQt5.QtWidgets.QWidget):
+    def __init__(
+        self, vmLogDockWidgetViewModel: viewmodels.LogDockWidgetViewModel
+    ) -> None:
         super().__init__()
 
-        self._ui = Ui_LogWidget()
+        self._ui = ui.Ui_LogWidget()
         self._ui.setupUi(self)
 
         self._vmLogDockWidgetViewModel = vmLogDockWidgetViewModel

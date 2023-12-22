@@ -1,49 +1,48 @@
-import os
-from models import *
-from constants import *
-from nttinject import *
-from abc import *
-from typing import *
+import models
+import typing
+import constants
+import nttinject
+import abc
 
 
-class IEditorService(ABC):
-    @abstractproperty
-    def RecentProjects(self) -> List[str]:
+class IEditorService(abc.ABC):
+    @abc.abstractproperty
+    def RecentProjects(self) -> typing.List[str]:
         pass
 
-    @abstractmethod
+    @abc.abstractmethod
     def Load(self) -> None:
         pass
 
-    @abstractmethod
+    @abc.abstractmethod
     def ClearRecentProjects(self) -> None:
         pass
 
-    @abstractmethod
+    @abc.abstractmethod
     def AppendNewRecentProject(self, strProjectFile: str) -> None:
         pass
 
 
-@dependency_inject(EditorData)
+@nttinject.dependency_inject(models.EditorData)
 class EditorService(IEditorService):
-    def __init__(self, mEditorData: EditorData) -> None:
+    def __init__(self, mEditorData: models.EditorData) -> None:
         super().__init__()
         self._mEditorData = mEditorData
 
         self.Load()
 
     @property
-    def RecentProjects(self) -> List[str]:
+    def RecentProjects(self) -> typing.List[str]:
         return self._mEditorData.RecentProjects
 
     def Load(self) -> None:
         try:
-            self._mEditorData.FromFile(EDITOR_DATA_JSON)
+            self._mEditorData.FromFile(constants.EDITOR_DATA_JSON)
         except:
             self._SaveEditorData()
 
     def _SaveEditorData(self) -> None:
-        self._mEditorData.ToFile(EDITOR_DATA_JSON)
+        self._mEditorData.ToFile(constants.EDITOR_DATA_JSON)
 
     def ClearRecentProjects(self) -> None:
         self._mEditorData.RecentProjects.clear()

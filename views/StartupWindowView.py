@@ -1,16 +1,14 @@
-from typing import *
-from PyQt5.QtWidgets import *
-from ui import *
-from constants import *
+import PyQt5
+import ui
 
-from .StartupWidgetView import *
-from .GameEditorWindowView import *
+from .StartupWidgetView import StartupWidgetView
+from .GameEditorWindowView import GameEditorWindowView
 
 
-class StartupWindowView(QMainWindow):
+class StartupWindowView(PyQt5.QtWidgets.QMainWindow):
     def __init__(self, wGameEditorWindow: GameEditorWindowView) -> None:
         super().__init__()
-        self._ui = Ui_StartupWindow()
+        self._ui = ui.Ui_StartupWindow()
         self._ui.setupUi(self)
         self._wGameEditorWindow = wGameEditorWindow
 

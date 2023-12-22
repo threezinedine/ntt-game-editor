@@ -1,19 +1,19 @@
-from typing import *
-from PyQt5.QtGui import QMouseEvent
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from ntt_signal import Signal
-from utils import *
+import typing
+import PyQt5
+import ntt_signal
+import utils
 
 
-class DoubleClickedLabel(QLabel):
+class DoubleClickedLabel(PyQt5.QtWidgets.QLabel):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self.onDoubleClicked = Signal(str)
+        self.onDoubleClicked = ntt_signal.Signal(str)
 
-        self.setStyleSheet(CssLoader("double-clicked-label.css").Content)
-        self.setCursor(Qt.PointingHandCursor)
+        self.setStyleSheet(utils.CssLoader("double-clicked-label.css").Content)
+        self.setCursor(PyQt5.QtCore.Qt.PointingHandCursor)
 
-    def mouseDoubleClickEvent(self, a0: Union[QMouseEvent, None]) -> None:
+    def mouseDoubleClickEvent(
+        self, a0: typing.Union[PyQt5.QtGui.QMouseEvent, None]
+    ) -> None:
         self.onDoubleClicked.Emit(self.text())
         return super().mouseDoubleClickEvent(a0)

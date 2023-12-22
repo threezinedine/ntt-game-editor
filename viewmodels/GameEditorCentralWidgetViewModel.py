@@ -1,8 +1,7 @@
-from nttinject import *
-from typing import *
-from models import *
-from ui import *
-from services import *
+import nttinject
+import typing
+import models
+import services
 
 
 class GameEditorCentralWidgetViewModel:
