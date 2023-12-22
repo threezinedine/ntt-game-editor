@@ -35,7 +35,9 @@ class NewProjectDialogViewModel:
         self.ProjectPathSignal.Attach(self.ProjectFullPathSignal)
         self.ProjectNameSignal.Attach(self.IsValidSignal)
         self.ProjectPathSignal.Attach(self.IsValidSignal)
-        self._serProjectService.ServiceErrorSignal.Attach(self.CreateProjectErrorSignal)
+        self._serProjectService.CreateProjectServiceErrorSignal.Attach(
+            self.CreateProjectErrorSignal
+        )
 
     @property
     def ProjectName(self) -> str:

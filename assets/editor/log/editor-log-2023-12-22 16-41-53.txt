@@ -1,0 +1,1 @@
+2023-12-22 16:41:58,147 - INFO - Open Project File C:/GameProjects\HelloMotherFucker\HelloMotherFucker.nttproj sucessfully.

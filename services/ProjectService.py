@@ -12,7 +12,7 @@ from .LogService import ILogService
 class IProjectService(abc.ABC):
     def __init__(self) -> None:
         super().__init__()
-        self.ServiceErrorSignal = ntt_signal.Signal(str)
+        self.CreateProjectServiceErrorSignal = ntt_signal.Signal(str)
         self.OpenProjectServiceErrorSignal = ntt_signal.Signal(str)
 
     @abc.abstractmethod
@@ -71,7 +71,7 @@ class ProjectService(IProjectService):
                 )
 
                 if not bResult:
-                    self.ServiceErrorSignal.Emit(strMessage)
+                    self.CreateProjectServiceErrorSignal.Emit(strMessage)
                     return False
 
             bResult = self._CreateProjectFile(
@@ -84,7 +84,7 @@ class ProjectService(IProjectService):
                 return False
 
         else:
-            self.ServiceErrorSignal.Emit(strMessage)
+            self.CreateProjectServiceErrorSignal.Emit(strMessage)
             return False
 
         self._serLogService.Info(f"Create Project {strProjectName} successfully")
@@ -111,7 +111,7 @@ class ProjectService(IProjectService):
             )
             return True
         except Exception as e:
-            self.ServiceErrorSignal.Emit(str(e))
+            self.CreateProjectServiceErrorSignal.Emit(str(e))
             return False
 
     def OpenProject(self, strProjectFile: str) -> bool:

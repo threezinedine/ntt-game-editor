@@ -1,0 +1,1 @@
+2023-12-22 16:41:47,530 - INFO - Create Project HelloMotherFucker successfully
