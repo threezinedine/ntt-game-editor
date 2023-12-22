@@ -1,15 +1,16 @@
-from ntt_json_model import *
+import ntt_json_model
+import typing
 
 
-class EditorData(ModelBase):
+class EditorData(ntt_json_model.ModelBase):
     def __init__(self) -> None:
         super().__init__()
 
-        ListProperty(self, [], "_strRecentProjectFiles")
-        BoolProperty(self, False, "_bDarkMode")
+        ntt_json_model.ListProperty(self, [], "_strRecentProjectFiles")
+        ntt_json_model.BoolProperty(self, False, "_bDarkMode")
 
     @property
-    def RecentProjects(self) -> List[str]:
+    def RecentProjects(self) -> typing.List[str]:
         return self._strRecentProjectFiles.GetValue()
 
     @property
@@ -21,4 +22,4 @@ class EditorData(ModelBase):
         self._bDarkMode.SetValue(bDarkMode)
 
 
-ModelBase.mSubModels[EditorData.__name__] = EditorData
+ntt_json_model.ModelBase.mSubModels[EditorData.__name__] = EditorData

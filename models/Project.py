@@ -1,12 +1,13 @@
-from ntt_json_model import *
+import ntt_json_model
+import typing
 
 
-class Project(ModelBase):
+class Project(ntt_json_model.ModelBase):
     def __init__(self) -> None:
         super().__init__()
 
-        StrProperty(self, "", "_strProjectName")
-        ListProperty(self, [], "_strFolders")
+        ntt_json_model.StrProperty(self, "", "_strProjectName")
+        ntt_json_model.ListProperty(self, [], "_strFolders")
 
     @property
     def ProjectName(self) -> str:
@@ -17,11 +18,11 @@ class Project(ModelBase):
         self._strProjectName.SetValue(strProjectName)
 
     @property
-    def Folders(self) -> List[str]:
+    def Folders(self) -> typing.List[str]:
         return self._strFolders.GetValue()
 
     def __repr__(self) -> str:
         return f'<Project id={id(self)} name="{self._strProjectName}"/>'
 
 
-ModelBase.mSubModels[Project.__name__] = Project
+ntt_json_model.ModelBase.mSubModels[Project.__name__] = Project

@@ -1,49 +1,68 @@
 import sys
-from PyQt5.QtWidgets import QApplication
-from views import *
-from constants import *
-from nttinject import *
-from models import *
-from viewmodels import *
-from services import *
+import PyQt5
+import views
+import viewmodels
+import nttinject
+import models
+import services
 
 
 if __name__ == "__main__":
     try:
-        injector = Injector()
+        injector = nttinject.Injector()
 
         # Models registration
-        injector.AddSingleton(Project, lambda: Project())
-        injector.AddSingleton(EditorData, lambda: EditorData())
+        injector.AddSingleton(models.Project, lambda: models.Project())
+        injector.AddSingleton(models.EditorData, lambda: models.EditorData())
 
         # Services registration
-        injector.AddSingleton(IFileSystemService, lambda: Create_FileSystemService())
-        injector.AddSingleton(ITemplateService, lambda: Create_TemplateService())
-        injector.AddSingleton(IProjectService, lambda: Create_ProjectService())
-        injector.AddSingleton(IEditorService, lambda: Create_EditorService())
+        injector.AddSingleton(
+            services.IFileSystemService, lambda: services.Create_FileSystemService()
+        )
+        injector.AddSingleton(
+            services.ITemplateService, lambda: services.Create_TemplateService()
+        )
+        injector.AddSingleton(
+            services.IProjectService, lambda: services.Create_ProjectService()
+        )
+        injector.AddSingleton(
+            services.IEditorService, lambda: services.Create_EditorService()
+        )
+        injector.AddSingleton(
+            services.ILogService, lambda: services.Create_LogService()
+        )
 
         # ViewModels registration
         injector.AddTransient(
-            NewProjectDialogViewModel, lambda: NewProjectDialogViewModel()
+            viewmodels.NewProjectDialogViewModel,
+            lambda: viewmodels.NewProjectDialogViewModel(),
         )
         injector.AddSingleton(
-            GameEditorCentralWidgetViewModel, lambda: GameEditorCentralWidgetViewModel()
+            viewmodels.GameEditorCentralWidgetViewModel,
+            lambda: viewmodels.GameEditorCentralWidgetViewModel(),
         )
-        injector.AddSingleton(StartupWidgetViewModel, lambda: StartupWidgetViewModel())
         injector.AddSingleton(
-            GameEditorWindowViewModel, lambda: GameEditorWindowViewModel()
+            viewmodels.StartupWidgetViewModel,
+            lambda: viewmodels.StartupWidgetViewModel(),
         )
-        injector.AddSingleton(LogDockWidgetViewModel, lambda: LogDockWidgetViewModel())
+        injector.AddSingleton(
+            viewmodels.GameEditorWindowViewModel,
+            lambda: viewmodels.GameEditorWindowViewModel(),
+        )
+        injector.AddSingleton(
+            viewmodels.LogDockWidgetViewModel,
+            lambda: viewmodels.LogDockWidgetViewModel(),
+        )
 
-        app = QApplication(sys.argv)
+        app = PyQt5.QtWidgets.QApplication(sys.argv)
 
-        window = StartupWindowView(GameEditorWindowView())
+        window = views.StartupWindowView(views.GameEditorWindowView())
         window.showMaximized()
 
         sys.exit(app.exec_())
 
-    except:
-        # except Exception as e:
-        # print(e)
+    # except:
+    except Exception as e:
+        print(e)
         # input()
-        pass
+        # pass

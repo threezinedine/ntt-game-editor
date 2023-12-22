@@ -11,3 +11,5 @@ EDITOR_WINDOW_TITLE = "NTT Engine"
 
 EDITOR_DATA_JSON = "assets/editor/data.json"
 EDITOR_SETTING_JSON = "assets/editor/setting.json"
+
+LOGGER_NAME = "Logger"
