@@ -17,6 +17,9 @@ if __name__ == "__main__":
 
         # Services registration
         injector.AddSingleton(
+            services.ILogService, lambda: services.Create_LogService()
+        )
+        injector.AddSingleton(
             services.IFileSystemService, lambda: services.Create_FileSystemService()
         )
         injector.AddSingleton(
@@ -27,9 +30,6 @@ if __name__ == "__main__":
         )
         injector.AddSingleton(
             services.IEditorService, lambda: services.Create_EditorService()
-        )
-        injector.AddSingleton(
-            services.ILogService, lambda: services.Create_LogService()
         )
 
         # ViewModels registration

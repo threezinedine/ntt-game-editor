@@ -53,7 +53,7 @@ class StartupWidgetView(PyQt5.QtWidgets.QWidget):
     def _LoadRecentProjects(self) -> None:
         for strProjectFile in reversed(self._vmStartupWidgetViewModel.RecentProjects):
             wProjectLabel = components.DoubleClickedLabel(strProjectFile)
-            # wProjectLabel.onDoubleClicked.Connect(self._OnClicked_TemplateButton)
+            wProjectLabel.onDoubleClicked.Connect(self._OnClicked_ProjectButton)
             self._ui.recentProjectsLayout.addWidget(wProjectLabel)
 
         self._ui.recentProjectsLayout.addItem(
@@ -64,6 +64,11 @@ class StartupWidgetView(PyQt5.QtWidgets.QWidget):
                 PyQt5.QtWidgets.QSizePolicy.Expanding,
             )
         )
+
+    def _OnClicked_ProjectButton(self, strProjectFile: str) -> None:
+        bResult = self._vmStartupWidgetViewModel.OpenProject(strProjectFile)
+        if bResult:
+            self.CloseSignal.Emit()
 
     def _OnClicked_TemplateButton(self, strTemplateName: str) -> None:
         wNewProjectDialog = NewProjectDialogView(

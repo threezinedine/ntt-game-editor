@@ -6,6 +6,7 @@ import nttinject
 import ntt_signal
 
 from .FileSystemService import IFileSystemService
+from .LogService import ILogService
 
 
 class IProjectService(abc.ABC):
@@ -29,13 +30,17 @@ class IProjectService(abc.ABC):
         pass
 
 
-@nttinject.dependency_inject(IFileSystemService, models.Project)
+@nttinject.dependency_inject(IFileSystemService, models.Project, ILogService)
 class ProjectService(IProjectService):
     def __init__(
-        self, serFileSystemService: IFileSystemService, mProject: models.Project
+        self,
+        serFileSystemService: IFileSystemService,
+        mProject: models.Project,
+        serLogService: ILogService,
     ) -> None:
         super().__init__()
         self._serFileSystemService = serFileSystemService
+        self._serLogService = serLogService
         self._mProject = mProject
 
     def CreateProject(
@@ -79,10 +84,14 @@ class ProjectService(IProjectService):
             self.ServiceErrorSignal.Emit(strMessage)
             return False
 
+        self._serLogService.Info(f"Create Project {strProjectName} successfully")
         return True
 
     def _CreateProjectFile(
-        self, mTemplate: models.Template, strProjectName: str, strProjectFolder: str
+        self,
+        mTemplate: models.Template,
+        strProjectName: str,
+        strProjectFolder: str,
     ) -> bool:
         try:
             self._mProject.ProjectName = strProjectName
@@ -104,6 +113,7 @@ class ProjectService(IProjectService):
     def OpenProject(self, strProjectFile: str) -> bool:
         try:
             self._mProject.FromFile(strProjectFile)
+            self._serLogService.Info(f"Open Project File {strProjectFile} sucessfully.")
             return True
         except Exception as e:
             self.OpenProjectServiceErrorSignal.Emit(str(e))

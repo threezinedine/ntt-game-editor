@@ -40,6 +40,10 @@ class LogMessage:
         return self._time
 
     @property
+    def TimeString(self) -> str:
+        return datetime.datetime.fromtimestamp(self._time)
+
+    @property
     def Line(self) -> int:
         return self._nLine
 
@@ -60,6 +64,10 @@ class LogMessage:
 
 
 class ILogService(abc.ABC):
+    @abc.abstractproperty
+    def Messages(self) -> ntt_observable_list.ObservableList[LogMessage]:
+        pass
+
     @abc.abstractmethod
     def AddMessage(self, oLogMessage: LogMessage) -> None:
         pass
@@ -78,6 +86,10 @@ class ILogService(abc.ABC):
 
     @abc.abstractmethod
     def Error(self, strMessage: str) -> None:
+        pass
+
+    @abc.abstractmethod
+    def ClearLog(self) -> None:
         pass
 
 
@@ -96,22 +108,35 @@ class EngineLoggingHandler(logging.Handler):
             strMessage=record.getMessage(),
         )
 
-        print(oLogMessage)
+        self._serLogService.AddMessage(oLogMessage=oLogMessage)
 
 
 class LogService(ILogService):
     def __init__(self) -> None:
         super().__init__()
 
-        self._oLogMessages: typing.List[
+        self._mLogMessages: typing.List[
             LogMessage
         ] = ntt_observable_list.ObservableList([])
 
         self._oLogger = logging.getLogger(constants.LOGGER_NAME)
+        self._oLogger.setLevel(logging.DEBUG)
         self._oLogger.addHandler(EngineLoggingHandler(self))
 
+        hFileHanlder = logging.FileHandler(
+            f"assets/editor/log/editor-log-{datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H-%M-%S')}.txt"
+        )
+        hFileHanlder.setFormatter(
+            logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+        )
+        self._oLogger.addHandler(hFileHanlder)
+
+    @property
+    def Messages(self) -> typing.List[LogMessage]:
+        return self._mLogMessages
+
     def AddMessage(self, oLogMessage: LogMessage) -> None:
-        self._oLogMessages.append(oLogMessage)
+        self._mLogMessages.append(oLogMessage)
 
     def Info(self, strMessage: str) -> None:
         self._oLogger.info(strMessage)
@@ -124,6 +149,9 @@ class LogService(ILogService):
 
     def Error(self, strMessage: str) -> None:
         self._oLogger.error(strMessage)
+
+    def ClearLog(self) -> None:
+        self._mLogMessages.clear()
 
 
 def Create_LogService(*args, **kwargs) -> ILogService:
